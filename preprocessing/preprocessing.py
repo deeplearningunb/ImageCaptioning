@@ -23,16 +23,15 @@ class Preprocessing():
         self.encode_model = None
 
     def _load_and_preprocess_images(self):
-        if not os.path.exists(self.img_features_path):
-            print("a")
-            path = './dataset/images/Flicker8k_Dataset/*.jpg'
-            for img in glob.glob(path):
+        path = './dataset/images/Flicker8k_Dataset/*.jpg'
+        for img in glob.glob(path):
+            if not os.path.exists(self.img_features_path):
                 image = cv2.imread(img)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 image = cv2.resize(image, (299,299))
                 self.images_list.append(image)
-                img = img.split('/')[-1]
-                self.images_name.append(img)
+            img = img.split('/')[-1]
+            self.images_name.append(img)
         
     def _creating_cnn_model_for_feature_extraction(self):
         x = tf.keras.applications.InceptionV3(include_top=True, weights='imagenet')
@@ -69,7 +68,7 @@ class Preprocessing():
                     self.captions_mapped[name] = [caption]
                 else:
                     self.captions_mapped[name].append(caption)
-
+        
     def _transform_caption_in_vocab(self):
         mapped_number = 1
         for w in self.captions_mapped.values():
@@ -85,11 +84,35 @@ class Preprocessing():
                 for word in words.split():
                     mapped.append(self.vocab[word])
             
-            self.captions_mapped[i][w.index(words)] = mapped
+                self.captions_mapped[i][w.index(words)] = mapped
 
-    def generator(self):
-        pass
+    def _generator(self):
+        X = []
+        y_in = []
+        y_out = []
 
+        for img_name, captions in self.captions_mapped.items():
+            for caption in captions:
+                for i in range(1, len(caption)):
+                    X.append(self.images_features[img_name])
+
+                    in_seq = [caption[:i]]
+                    out_seq = caption[i]
+
+                    print(f'{in_seq} -> {out_seq}')
+
+                    in_seq = tf.keras.preprocessing.sequence.pad_sequences(
+                        in_seq, 
+                        maxlen=40, 
+                        padding='post', 
+                        truncating='post')[0]
+
+                    out_seq = tf.keras.utils.to_categorical([out_seq], num_classes=len(self.vocab) + 1)[0]
+
+                    print(f'{in_seq} -> {out_seq}')
+
+                    y_in.append(in_seq)
+                    y_out.append(out_seq)
 
     def preprocess_all(self):
         self._load_and_preprocess_images()
@@ -97,6 +120,7 @@ class Preprocessing():
         self._prepare_and_feed_images_to_encode_model()
         self._load_and_preprocess_captions()
         self._transform_caption_in_vocab()
+        self._generator()
 
 
 if __name__ == "__main__":
