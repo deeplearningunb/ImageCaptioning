@@ -87,6 +87,7 @@ class Preprocessing():
                 self.captions_mapped[i][w.index(words)] = mapped
 
     def _generator(self):
+        ### function made by github.com/Pawandeep-prog
         X = []
         y_in = []
         y_out = []
@@ -99,8 +100,6 @@ class Preprocessing():
                     in_seq = [caption[:i]]
                     out_seq = caption[i]
 
-                    print(f'{in_seq} -> {out_seq}')
-
                     in_seq = tf.keras.preprocessing.sequence.pad_sequences(
                         in_seq, 
                         maxlen=40, 
@@ -108,8 +107,6 @@ class Preprocessing():
                         truncating='post')[0]
 
                     out_seq = tf.keras.utils.to_categorical([out_seq], num_classes=len(self.vocab) + 1)[0]
-
-                    print(f'{in_seq} -> {out_seq}')
 
                     y_in.append(in_seq)
                     y_out.append(out_seq)
