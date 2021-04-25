@@ -91,25 +91,36 @@ class Preprocessing():
         X = []
         y_in = []
         y_out = []
+        j = 0
 
-        for img_name, captions in self.captions_mapped.items():
-            for caption in captions:
-                for i in range(1, len(caption)):
-                    X.append(self.images_features[img_name])
+        while True:
+            for img_name, captions in self.captions_mapped.items():
+                j += 1
+                for caption in captions:
+                    for i in range(1, len(caption)):
+                        X.append(self.images_features[img_name])
 
-                    in_seq = [caption[:i]]
-                    out_seq = caption[i]
+                        in_seq = [caption[:i]]
+                        out_seq = caption[i]
 
-                    in_seq = tf.keras.preprocessing.sequence.pad_sequences(
-                        in_seq, 
-                        maxlen=40, 
-                        padding='post', 
-                        truncating='post')[0]
+                        in_seq = tf.keras.preprocessing.sequence.pad_sequences(
+                            in_seq, 
+                            maxlen=40, 
+                            padding='post', 
+                            truncating='post')[0]
 
-                    out_seq = tf.keras.utils.to_categorical([out_seq], num_classes=len(self.vocab) + 1)[0]
+                        out_seq = tf.keras.utils.to_categorical([out_seq], num_classes=len(self.vocab) + 1)[0]
 
-                    y_in.append(in_seq)
-                    y_out.append(out_seq)
+                        y_in.append(in_seq)
+                        y_out.append(out_seq)
+
+                if j == 1500:
+                    yield (np.array(X), np.array(y_in), np.array(y_out))
+                    X = []
+                    y_in = []
+                    y_out = []
+                    j=0
+        
 
     def preprocess_all(self):
         self._load_and_preprocess_images()
