@@ -4,10 +4,10 @@
 ### Professor: DIEGO LUIZ DORGAM AGUILERA 
 ### ImageCaptioning
 ## Participantes:
-<h4>. Andre Lucas de Sousa Pinto -  170068251 </h4>
-<h4>.  Joao Gabriel Rossi de Borba -  170013693 </h4>
-<h4>. Julia de Melo Franco Fernandes - 170037738 </h4>
-<h4>. Lieverton Santos Silva - 170039251 </h4>
+- Andre Lucas de Sousa Pinto -  170068251
+-  Joao Gabriel Rossi de Borba -  170013693
+- Julia de Melo Franco Fernandes - 170037738
+- Lieverton Santos Silva - 170039251
 
 
 ## :one: Descrição do Projeto
