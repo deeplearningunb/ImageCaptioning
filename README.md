@@ -36,6 +36,6 @@ Para criar o projeto, foi necessária a utilização de 2 redes neurais, sendo e
 - A RNN começa com uma camada de Embedding para trata das diferentes palavras do vocabulário;
 - As camadas recorrentes da RNN são do tipo LSTM (long-short term memory) ao invés de GRU ou uma célula RNN padrão;
 
-<h4 align="center"> 
-	:mortar_board: Em construção...  🚧
-</h4>
+###  :six: Dataset
+Dados retirados desse link:
+-  [Dataset](https://github.com/jbrownlee/Datasets)
